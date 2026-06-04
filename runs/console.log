@@ -1,0 +1,82 @@
+Benchmark version: v1.2.1  suite: workspace
+Agent model: gpt-4o-2024-05-13   Judge model: gpt-4o-mini-2024-07-18
+User-task subset: ['user_task_0', 'user_task_1', 'user_task_2']
+
+>>> BASELINE run
+Traceback (most recent call last):
+  File "/Users/linaiyer/overseer/run_experiment.py", line 155, in <module>
+    main()
+    ~~~~^^
+  File "/Users/linaiyer/overseer/run_experiment.py", line 94, in main
+    baseline_results = benchmark_suite_without_injections(
+        baseline_pipe,
+    ...<4 lines>...
+        benchmark_version=BENCHMARK_VERSION,
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/benchmark.py", line 348, in benchmark_suite_without_injections
+    utility, security = run_task_without_injection_tasks(
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        suite, agent_pipeline, user_task, logdir, force_rerun, benchmark_version
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/benchmark.py", line 283, in run_task_without_injection_tasks
+    utility, security = suite.run_task_with_pipeline(agent_pipeline, task, injection_task=None, injections={})
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/task_suite/task_suite.py", line 386, in run_task_with_pipeline
+    _, _, task_environment, messages, _ = agent_pipeline.query(prompt, runtime, task_environment)
+                                          ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/agent_pipeline/agent_pipeline.py", line 178, in query
+    query, runtime, env, messages, extra_args = element.query(query, runtime, env, messages, extra_args)
+                                                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/agent_pipeline/llms/openai_llm.py", line 198, in query
+    completion = chat_completion_request(
+        self.client, self.model, openai_messages, openai_tools, self.reasoning_effort, self.temperature
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 418, in exc_check
+    raise retry_exc.reraise()
+          ~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 185, in reraise
+    raise self.last_attempt.result()
+          ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/opt/anaconda3/lib/python3.13/site-packages/tenacity/__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/agentdojo/agent_pipeline/llms/openai_llm.py", line 157, in chat_completion_request
+    return client.chat.completions.create(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<4 lines>...
+        reasoning_effort=reasoning_effort or NOT_GIVEN,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/openai/_utils/_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1192, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<47 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/openai/_base_client.py", line 1297, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/openai/_base_client.py", line 1070, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-.... You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}
